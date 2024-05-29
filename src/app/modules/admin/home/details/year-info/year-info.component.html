@@ -1,0 +1,67 @@
+<div class="w-full">
+    <!-- searchbox -->
+    <div class="flex items-center flex-auto gap-5 mb-5">
+        <mat-form-field class="fuse-mat-rounded fuse-mat-dense flex-auto" [subscriptSizing]="'dynamic'" >
+            <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:magnifying-glass'" matPrefix></mat-icon>
+            <input matInput [autocomplete]="'off'" [formControl]="searchControl" [placeholder]="'Realizar busqueda'" #searchInput>
+        </mat-form-field>
+        <button class="sm:inline-flex" mat-button [matMenuTriggerFor]="orderByMenu" [disabled]="loading">
+            <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:bars-arrow-down'"></mat-icon>
+            <span class="hidden sm:inline-block ml-2">Ordenar fichas</span>
+        </button>
+        <mat-menu #orderByMenu="matMenu">
+            <button mat-menu-item (click)="sortByOnChange('Alfabeticamente: Ascendente', 'alfabetico', 'ASC')">
+                <span class="flex items-center">
+                    <span>Alfabeticamente: Ascendente</span>
+                </span>
+            </button>
+            <button mat-menu-item (click)="sortByOnChange('Alfabeticamente: Descendente', 'alfabetico', 'DESC')">
+                <span class="flex items-center">
+                    <span>Alfabeticamente: Descendente</span>
+                </span>
+            </button>
+            <button mat-menu-item (click)="sortByOnChange('Mas Recientes', 'fecha', 'DESC')" *ngIf="yearSelected !== 'undefined'">
+                <span class="flex items-center">
+                    <span>Mas Recientes</span>
+                </span>
+            </button>
+            <button mat-menu-item (click)="sortByOnChange('Mas Antiguos', 'fecha', 'ASC')" *ngIf="yearSelected !== 'undefined'">
+                <span class="flex items-center">
+                    <span>Mas Antiguos</span>
+                </span>
+            </button>
+        </mat-menu>
+    </div>
+    <div class="flex w-full justify-between mb-5">
+        <p class="text-secondary font-semibold">{{totalFichas}} resultados encontrados</p>
+        <p class="text-secondary font-normal">Ordenado por: {{sortFilter}}</p>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+        <ng-container *ngFor="let item of fichas; index as i">
+            <a class="p-2 hover:bg-zinc-100 cursor-pointer shadow-md rounded-md" [routerLink]="['./', item.clavePrincipal]" queryParamsHandling="merge">
+                <!-- img programa -->
+                <div class="w-full h-44">
+                    <img class="object-cover w-full h-full opacity-20" [src]="image" alt="img capitulo">
+                </div>
+                <!-- tags -->
+                <!-- <div class="w-full mt-2">
+                    <div class="flex gap-2 overflow-hidden">
+                        <ng-container *ngFor="let item of [1,1,1,1,1,1]">
+                            <h2 class="bg-zinc-200 text-secondary px-2">Palabra</h2>
+                        </ng-container>
+                    </div>
+                </div> -->
+                <div class="mt-2"></div>
+                <!-- info cap -->
+                <h1 class="text-xl font-bold text-black tracking-normal">{{item.nombreArchivo}}</h1>
+                <h3 class="text-secondary text-lg font-semibold">{{item.fechaEmision}}</h3>
+                <div class="flex justify-end" *ngIf="item.coincidencias">
+                    <h3 class="text-secondary text-lg font-semibold">Coincidencias: {{item.coincidencias}}</h3>
+                </div>
+            </a>
+        </ng-container>
+    </div>
+    <div class="flex w-full">
+        <mat-paginator class="bg-transparent" [length]="totalFichas" [pageIndex]="page" [pageSize]="limit" [showFirstLastButtons]="true" (page)="handlePageEvent($event)" [disabled]="loading"></mat-paginator>
+    </div>
+</div>

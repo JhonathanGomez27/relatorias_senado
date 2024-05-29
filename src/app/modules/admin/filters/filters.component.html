@@ -1,0 +1,264 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+
+    <div class="p-2 bg-white w-full flex justify-between">
+        <div class="flex flex-row gap-3 ">
+            <a class="cursor-pointer p-2 flex items-center rounded-none bg-gray-100 " mat-flat-button [routerLink]="['/programas']">
+                <mat-icon class="text-current icon-size-4 mr-2" [svgIcon]="'mat_outline:arrow_back_ios'"></mat-icon>
+                Volver
+            </a>
+            <p class="p-2 text-lg font-bold">FILTROS</p>
+        </div>
+        <div>
+            <button mat-icon-button (click)="matDrawer.toggle()">
+                <mat-icon [svgIcon]="'heroicons_outline:bars-3'"></mat-icon>
+            </button>
+        </div>
+    </div>
+
+    <mat-drawer-container class="flex-auto h-full">
+        <!-- Drawer -->
+        <mat-drawer class="w-72 dark:bg-gray-900" [autoFocus]="false" [mode]="drawerMode" [opened]="drawerOpened" #matDrawer>
+
+            <!-- Filters -->
+            <div class="overflow-y-hidden">
+                <!-- categoria -->
+                <!-- <div class="py-2 px-5 flex flex-col">
+                    <p class="text-secondary font-medium">Categoría</p>
+                    <mat-checkbox [(ngModel)]="programas" (change)="onCategoriaChange('programas')">Programas</mat-checkbox>
+                    <mat-checkbox [(ngModel)]="fichas" (change)="onCategoriaChange('fichas')">Fichas</mat-checkbox>
+                </div> -->
+                <ng-container >
+                    <form [formGroup]="programFilterForm">
+                        <div class="px-5 mt-2">
+                            <p class="text-secondary font-medium">Criterio</p>
+                            <mat-form-field class="w-full mt-2" [subscriptSizing]="'dynamic'">
+                                <mat-select placeholder="Seleccionar criterio" [formControlName]="'criterio'" (selectionChange)="setQueryParam('criterio', $event.value)">
+                                    <ng-container *ngFor="let item of [null,'Programa', 'Promo', 'Ajuste', 'Transmision']">
+                                        <mat-option [value]="item">{{item | titlecase}}</mat-option>
+                                    </ng-container>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="px-5 mt-2">
+                            <p class="text-secondary font-medium">Patrimonio</p>
+                            <mat-form-field class="w-full mt-2" [subscriptSizing]="'dynamic'">
+                                <mat-select placeholder="Seleccionar patrimonio" [formControlName]="'patrimonio'" (selectionChange)="setQueryParam('patrimonio', $event.value)">
+                                    <ng-container *ngFor="let item of [null,'Si', 'No']">
+                                        <mat-option [value]="item">{{item | titlecase}}</mat-option>
+                                    </ng-container>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="px-5 mt-2">
+                            <p class="text-secondary font-medium">Clasificación</p>
+                            <mat-form-field class="w-full mt-2" [subscriptSizing]="'dynamic'">
+                                <mat-select placeholder="Seleccionar Clasificación" [formControlName]="'clasificacion'" (selectionChange)="setQueryParam('clasificacion', $event.value)">
+                                    <ng-container *ngFor="let item of [null,'Todas las edades', 'Todas las edades con guía paterna','Niños', '12 años sin escenas de sexo y violencias','12 años (sexo y violencia)', 'Adultos (sexo y violencia)']">
+                                        <mat-option [value]="item">{{item | titlecase}}</mat-option>
+                                    </ng-container>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="px-5 mt-2">
+                            <p class="text-secondary font-medium">Idioma</p>
+                            <mat-form-field class="w-full mt-2" [subscriptSizing]="'dynamic'">
+                                <mat-select placeholder="Seleccionar Idioma" [formControlName]="'idioma'" (selectionChange)="setQueryParam('idioma', $event.value)">
+                                    <ng-container *ngFor="let item of [null,'ESP']">
+                                        <mat-option [value]="item">{{item | titlecase}}</mat-option>
+                                    </ng-container>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </form>
+                </ng-container>
+
+                <ng-container >
+                    <form [formGroup]="fichasFilterForm">
+                        <div class="px-5 mt-2">
+                            <p class="text-secondary font-medium">Formato</p>
+                            <mat-form-field class="w-full mt-2" [subscriptSizing]="'dynamic'">
+                                <mat-select placeholder="Seleccionar formato" [formControlName]="'formato'" (selectionChange)="setQueryParam('formato', $event.value)">
+                                    <ng-container *ngFor="let item of formatos">
+                                        <mat-option [value]="item">{{item | titlecase}}</mat-option>
+                                    </ng-container>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="px-5 mt-2">
+                            <p class="text-secondary font-medium">Tipo de Archivo Recibido</p>
+                            <mat-form-field class="w-full mt-2" [subscriptSizing]="'dynamic'">
+                                <mat-select placeholder="Seleccionar tipo de archivo recibido" [formControlName]="'tipoArchivoRecibido'" (selectionChange)="setQueryParam('tipoArchivoRecibido', $event.value)">
+                                    <ng-container *ngFor="let item of archivosRecibidos">
+                                        <mat-option [value]="item">{{item}}</mat-option>
+                                    </ng-container>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="px-5 mt-2">
+                            <p class="text-secondary font-medium">Tipo de Archivo Guardado</p>
+                            <mat-form-field class="w-full mt-2" [subscriptSizing]="'dynamic'">
+                                <mat-select placeholder="Seleccionar tipo de archivo guardado" [formControlName]="'tipoArchivoGuardado'" (selectionChange)="setQueryParam('tipoArchivoGuardado', $event.value)">
+                                    <ng-container *ngFor="let item of archivosRecibidos">
+                                        <mat-option [value]="item">{{item}}</mat-option>
+                                    </ng-container>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="px-5 mt-2">
+                            <p class="text-secondary font-medium">Resolucion</p>
+                            <mat-form-field class="w-full mt-2" [subscriptSizing]="'dynamic'">
+                                <mat-select placeholder="Seleccionar Resolucion" [formControlName]="'resolucion'" (selectionChange)="setQueryParam('resolucion', $event.value)">
+                                    <ng-container *ngFor="let item of resoluciones">
+                                        <mat-option [value]="item">{{item}}</mat-option>
+                                    </ng-container>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="px-5 mt-2">
+                            <p class="text-secondary font-medium">Soporte físico de grabación</p>
+                            <mat-form-field class="w-full mt-2" [subscriptSizing]="'dynamic'">
+                                <mat-select placeholder="Seleccionar soporte físico de grabación" [formControlName]="'soporteFisicoGrabacion'" (selectionChange)="setQueryParam('soporteFisicoGrabacion', $event.value)">
+                                    <ng-container *ngFor="let item of soportesDigitales">
+                                        <mat-option [value]="item">{{item}}</mat-option>
+                                    </ng-container>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </form>
+                </ng-container>
+
+                <ng-container >
+                    <!-- Programa -->
+                    <div class="px-5 mt-2">
+                        <p class="text-secondary font-medium">Programas</p>
+                        <!-- <mat-form-field class="w-full mt-2" [subscriptSizing]="'dynamic'">
+                            <input matInput placeholder="Buscar programa">
+                        </mat-form-field> -->
+                        <div class="overflow-y-auto h-60 mt-3">
+                            <ng-container *ngFor="let programa of programasList">
+                                <mat-checkbox class="example-margin" [(ngModel)]="programasSelected[programa.clavePrincipal]" (change)="programaSelected($event, programa.clavePrincipal)">
+                                    <img [src]="getImgRoute(programa.imagen)" class="w-10 h-6" width="10" height="6" alt="imagen del programa">
+                                    <p class="font-semibold">{{programa.titulo}}</p>
+                                </mat-checkbox>
+                            </ng-container>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+
+            <div class="p-2 mt-2 bg-white">
+                <button class="rounded-none w-full" mat-flat-button [color]="'primary'" (click)="buttonFiltrar()">
+                    <mat-icon [svgIcon]="'feather:filter'"></mat-icon>
+                    <span class="hidden sm:inline-block ml-2">Filtrar</span>
+                </button>
+            </div>
+        </mat-drawer>
+
+        <!-- Drawer content -->
+        <mat-drawer-content class="flex flex-col bg-white">
+
+            <!-- Main -->
+            <div class="flex-auto p-6 sm:p-10">
+
+                <!-- Header -->
+                <div class="flex items-center">
+                    <div class="flex items-center flex-auto gap-2">
+                        <mat-form-field class="fuse-mat-rounded fuse-mat-dense flex-auto" [subscriptSizing]="'dynamic'" >
+                            <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:magnifying-glass'" matPrefix></mat-icon>
+                            <input matInput [autocomplete]="'off'" [formControl]="searchControl" [placeholder]="'Realizar busqueda'" #searchInput>
+                        </mat-form-field>
+                        <!-- <button class="sm:inline-flex" mat-button [matMenuTriggerFor]="orderByMenu">
+                            <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:bars-arrow-down'"></mat-icon>
+                            <span class="hidden sm:inline-block ml-2">Ordenar</span>
+                        </button>
+                        <mat-menu #orderByMenu="matMenu">
+                            <button mat-menu-item (click)="sortByOnChange('Todos')">
+                                <span class="flex items-center">
+                                    <span>Todos</span>
+                                </span>
+                            </button>
+                            <button mat-menu-item (click)="sortByOnChange('Mas Recientes')">
+                                <span class="flex items-center">
+                                    <span>Mas Recientes</span>
+                                </span>
+                            </button>
+                            <button mat-menu-item (click)="sortByOnChange('Mas Antiguos')">
+                                <span class="flex items-center">
+                                    <span>Mas Antiguos</span>
+                                </span>
+                            </button>
+                            <button mat-menu-item (click)="sortByOnChange('Alfabeticamente: Ascendente')">
+                                <span class="flex items-center">
+                                    <span>Alfabeticamente: Ascendente</span>
+                                </span>
+                            </button>
+                            <button mat-menu-item (click)="sortByOnChange('Alfabeticamente: Descendente')">
+                                <span class="flex items-center">
+                                    <span>Alfabeticamente: Descendente</span>
+                                </span>
+                            </button>
+                        </mat-menu> -->
+                    </div>
+                </div>
+
+                <div class="flex w-full justify-between px-5 py-2">
+                    <p class="text-secondary font-semibold">{{totalResultados}} resultados encontrados</p>
+                    <!-- <p class="text-secondary font-normal">Ordenado por: {{sortFilter}}</p> -->
+                </div>
+
+                <!-- CONTENT GOES HERE -->
+                <div class="min-h-100">
+                    <ng-container *ngIf="!buscar; else progresShow">
+                        <ng-container *ngIf="totalResultados > 0; else noResultados">
+                            <div class="border-2 p-4 mb-4" *ngFor="let item of resultados">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    <a class="w-full h-60 overflow-hidden" [routerLink]="['/programas/filtro', item.programa.clavePrincipal]" queryParamsHandling="merge">
+                                        <img class="h-full object-cover" [src]="getImgRoute(item.programa.imagen)" alt="img video">
+                                    </a>
+                                    <div class="w-full">
+                                        <a [routerLink]="['/programas/filtro', item.programa.clavePrincipal]" queryParamsHandling="merge"><p class="font-semibold text-2xl">{{item.programa.titulo}}</p></a>
+                                        <p class="text-secondary font-medium text-xl">{{item.programa.productora}} - {{item.programa.idioma}}</p>
+                                        <div class="grid grid-cols-4 mt-3 items-center gap-4">
+                                            <ng-container *ngFor="let ficha of item.fichas;let i = index; let first = first; let last = last">
+                                                <ng-container *ngIf="first || i == 1">
+                                                    <a class="h-14 col-span-1" [routerLink]="['/programas/filtro', item.programa.clavePrincipal, ficha.clavePrincipal]" queryParamsHandling="merge">
+                                                        <img class="h-full object-cover opacity-20" [src]="getImgRoute(item.programa.imagen)" alt="">
+                                                    </a>
+                                                    <a class="col-span-3 flex flex-col" [routerLink]="['/programas/filtro', item.programa.clavePrincipal, ficha.clavePrincipal]" queryParamsHandling="merge">
+                                                        <p class="font-semibold text-xl">{{ficha.nombreArchivo}}</p>
+                                                        <p class="text-secondary font-semibold text-xl">{{ficha.copyright}}</p>
+                                                    </a>
+                                                </ng-container>
+                                            </ng-container>
+                                        </div>
+                                        <p class="text-lg text-secondary mt-2">...</p>
+                                    </div>
+                                </div>
+                                <div class="w-full flex justify-between mt-2 items-center">
+                                    <p class="text-secondary" *ngIf="item.fichasPalabra">{{item.fichasPalabra}} conicidencias</p>
+                                    <p *ngIf="!item.fichasPalabra"></p>
+                                    <a class="rounded-none hover:shadow-md" [color]="'primary'" mat-flat-button [routerLink]="['/programas/filtro', item.programa.clavePrincipal]" queryParamsHandling="merge">Ver todos los resultados</a>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <ng-template #noResultados>
+                            <div class="w-full text-center p-10">
+                                <h1 class="text-2xl font-bold">No hay resultados para mostrar.</h1>
+                            </div>
+                        </ng-template>
+                    </ng-container>
+                    <ng-template #progresShow>
+                        <div class="w-full flex justify-center p-5">
+                            <mat-spinner [diameter]="40"></mat-spinner>
+                        </div>
+                    </ng-template>
+                    <mat-paginator class="bg-transparent" [length]="totalResultados" [pageIndex]="page" [pageSize]="20" [showFirstLastButtons]="true" (page)="handlePageChangeEvent($event)"></mat-paginator>
+                </div>
+            </div>
+
+        </mat-drawer-content>
+    </mat-drawer-container>
+</div>

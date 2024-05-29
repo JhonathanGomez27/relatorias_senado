@@ -1,0 +1,8 @@
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 w-full">
+    <ng-container *ngFor="let item of dataYears; index as i">
+        <a class="w-full p-2 border border-l-8 border-zinc-300 hover:bg-zinc-100 hover:shadow-md cursor-pointer" [routerLink]="['./', item['año']]" (click)="setyear(item['año'])">
+            <h1 class="text-3xl font-bold tracking-normal truncate">{{item['año'] !== 'undefined'? item['año']: 'Sin fecha'}}</h1>
+            <h2 class="text-lg font-medium text-secondary">{{item.cantidad}} Episodios</h2>
+        </a>
+    </ng-container>
+</div>

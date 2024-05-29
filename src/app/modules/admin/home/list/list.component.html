@@ -1,0 +1,72 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+
+    <!-- Main -->
+    <div class="flex-auto p-6 sm:p-5 shadow overflow-y-auto bg-card" cdkScrollable>
+
+        <!-- CONTENT GOES HERE -->
+        <div class="min-h-100">
+            <!-- Buttons -->
+            <div class="flex justify-between w-full mb-4 gap-5">
+                <a class="sm:inline-flex" mat-button [color]="'primary'" [routerLink]="['/programas/filtro']">
+                    <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:adjustments-vertical'"></mat-icon>
+                    <span class="hidden sm:inline-block ml-2">Realizar búsqueda</span>
+                </a>
+                <mat-form-field class="fuse-mat-rounded fuse-mat-dense flex-auto" [subscriptSizing]="'dynamic'" >
+                    <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:magnifying-glass'" matPrefix></mat-icon>
+                    <input matInput [autocomplete]="'off'" [formControl]="searchControl" [placeholder]="'Realizar busqueda'" #searchInput>
+                </mat-form-field>
+                <button class="sm:inline-flex" mat-button [matMenuTriggerFor]="orderByMenu">
+                    <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:bars-arrow-down'"></mat-icon>
+                    <span class="hidden sm:inline-block ml-2">Ordenar</span>
+                </button>
+                <mat-menu #orderByMenu="matMenu">
+                    <!-- <button mat-menu-item (click)="sortByOnChange('Todos')">
+                        <span class="flex items-center">
+                            <span>Todos</span>
+                        </span>
+                    </button> -->
+                    <!-- <button mat-menu-item (click)="sortByOnChange('Mas Recientes')">
+                        <span class="flex items-center">
+                            <span>Mas Recientes</span>
+                        </span>
+                    </button>
+                    <button mat-menu-item (click)="sortByOnChange('Mas Antiguos')">
+                        <span class="flex items-center">
+                            <span>Mas Antiguos</span>
+                        </span>
+                    </button> -->
+                    <button mat-menu-item (click)="sortByOnChange('Alfabeticamente: Ascendente', 'ASC')">
+                        <span class="flex items-center">
+                            <span>Alfabeticamente: Ascendente</span>
+                        </span>
+                    </button>
+                    <button mat-menu-item (click)="sortByOnChange('Alfabeticamente: Descendente', 'DESC')">
+                        <span class="flex items-center">
+                            <span>Alfabeticamente: Descendente</span>
+                        </span>
+                    </button>
+                </mat-menu>
+            </div>
+            <div class="flex justify-end w-full mb-2">
+                <p class="text-secondary font-normal">Ordenado por: {{sortFilter}}</p>
+            </div>
+
+            <!-- Main Content -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-2">
+                <ng-container *ngFor="let programa of programas">
+                    <div [routerLink]="['/programas/ver/', programa.clavePrincipal]" class="col-span-1 flex flex-col cursor-pointer hover:bg-gray-100 p-2 rounded-md shadow-inner">
+                        <!-- container img program -->
+                        <div class="bg-black w-full h-40 overflow-hidden">
+                            <img class="object-cover h-full" [src]="getImgRoute(programa.imagen)" alt="thumbnail programa">
+                        </div>
+                        <p class="truncate pt-2 text-lg font-bold">{{programa.titulo}}</p>
+                        <p class="text-secondary text-md font-semibold">{{programa.idioma}} - {{programa.productora}}</p>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+

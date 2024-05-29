@@ -1,0 +1,117 @@
+<div class="w-full md:absolute inset-0 flex flex-col min-w-0 md:overflow-hidden md:flex-row">
+    <!-- Main -->
+    <div class="flex-auto p-2 md:overflow-y-auto bg-card md:w-1/2" cdkScrollable>
+
+        <!-- CONTENT GOES HERE -->
+        <div class="min-h-100 ">
+            <!-- Breadcrumbs -->
+            <div class="flex flex-wrap items-center font-medium mb-2">
+                <a class="whitespace-nowrap text-primary-500" [routerLink]="['/programas']">Programas</a>
+                <div class="flex items-center ml-1 whitespace-nowrap">
+                    <mat-icon
+                        class="icon-size-5 text-secondary"
+                        [svgIcon]="'heroicons_mini:chevron-right'"></mat-icon>
+                    <a class="ml-1 text-primary-500" [routerLink]="['/programas/ver', params.programa]">{{programa.titulo}}</a>
+                </div>
+                <div class="flex items-center ml-1 whitespace-nowrap">
+                    <mat-icon
+                        class="icon-size-5 text-secondary"
+                        [svgIcon]="'heroicons_mini:chevron-right'"></mat-icon>
+                    <a class="ml-1 text-primary-500" [routerLink]="['/programas/ver', params.programa, params.year]" queryParamsHandling="merge">{{params.year}}</a>
+                </div>
+                <div class="flex items-center ml-1 whitespace-nowrap">
+                    <mat-icon
+                        class="icon-size-5 text-secondary"
+                        [svgIcon]="'heroicons_mini:chevron-right'"></mat-icon>
+                    <a class="ml-1 text-primary-500" >{{ficha.codigoArchivo}}</a>
+                </div>
+            </div>
+            <!-- back button -->
+            <div class="flex">
+                <a class="cursor-pointer p-2 flex items-center rounded-none bg-gray-100 text-lg" mat-flat-button [routerLink]="[routeBack]" queryParamsHandling="merge">
+                    <mat-icon class="text-current icon-size-4 mr-5" [svgIcon]="'mat_outline:arrow_back_ios'"></mat-icon>&nbsp; Volver
+                </a>
+            </div>
+            <!-- video player -->
+            <div class="w-full flex mt-2">
+                <video id="myVideo" controls="controls" preload="metadata" webkit-playsinline="webkit-playsinline" [muted]="false" class="w-full" #videoPlayer>
+                    <source [src]="videoUrl" type="video/mp4" />
+                </video>
+                <!-- <ng-container *ngIf="isVideo">
+                    <video id="myVideo" controls="controls" preload="metadata" webkit-playsinline="webkit-playsinline" [muted]="true" class="w-full" #videoPlayer>
+                        <source [src]="videoUrl" type="video/mp4" />
+                    </video>
+                </ng-container>
+                <ng-container *ngIf="!isVideo">
+                    <img [src]="videoUrl" alt="image no video">
+                </ng-container> -->
+            </div>
+            <!-- info programa -->
+            <div class="w-full flex flex-col mt-3">
+                <h1 class="text-2xl font-bold text-black tracking-wide">{{programa.titulo}} - {{ficha.duracion}}</h1>
+                <!-- <h1 class="text-lg font-bold text-secondary tracking-wide">{{ficha.nombreArchivo}}</h1> -->
+                <h2 class="text-xl font-semibold tracking-wide text-zinc-500">{{ficha.fechaEmision}}</h2>
+            </div>
+            <!-- tags -->
+            <div class="mt-2 w-full">
+                <h1 class="text-xl text-zinc-500 font-semibold">Tags</h1>
+                <div class="flex flex-wrap flex-row gap-2 w-full">
+                    <ng-container *ngFor="let item of tags">
+                        <a class="px-2 bg-zinc-300 text-zinc-500 text-md cursor-pointer hover:bg-zinc-100" (click)="filterByTag(item.textoOriginal)">{{item.textoOriginal}}</a>
+                    </ng-container>
+                </div>
+            </div>
+            <!-- Description -->
+            <div></div>
+            <!-- Descargar archivos -->
+            <div class="w-full grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3">
+                <!-- <div class="flex items-center p-2 border gap-2 cursor-pointer">
+                    <div class="flex items-center">
+                        <mat-icon class="icon-size-7" [svgIcon]="'heroicons_outline:document-arrow-down'"></mat-icon>
+                    </div>
+                    <div>
+                        <h2 class="font-semibold">Descargar transcripción</h2>
+                        <h3 class="text-secondary">000Mb</h3>
+                    </div>
+                </div> -->
+                <a class="flex items-center p-2 border gap-2 cursor-pointer" *ngIf="isVideo" [download]="ficha.codigoArchivo" target="_blank" [href]="videoUrl">
+                    <div class="flex items-center">
+                        <mat-icon class="icon-size-7" [svgIcon]="'heroicons_outline:arrow-down-on-square'"></mat-icon>
+                    </div>
+                    <div>
+                        <h2 class="font-semibold">Descargar video</h2>
+                        <!-- <h3 class="text-secondary">000Mb</h3> -->
+                    </div>
+                </a>
+            </div>
+        </div>
+
+    </div>
+    <!-- Main -->
+    <div class="flex-auto p-2 md:overflow-y-auto bg-card md:w-1/2" cdkScrollable>
+
+        <!-- CONTENT GOES HERE -->
+        <div class="min-h-100 ">
+            <!-- serach box -->
+            <div class="w-full">
+                <mat-form-field class="w-full " [subscriptSizing]="'dynamic'">
+                    <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:magnifying-glass'" matPrefix></mat-icon>
+                    <input matInput placeholder="Realizar búsqueda" [formControl]="searchControl">
+                </mat-form-field>
+            </div>
+            <!-- content -->
+            <div class="w-full border mt-3 min-h-100">
+                <ng-container *ngFor="let item of subtitulos">
+                    <div class="w-full p-3 cursor-pointer hover:bg-zinc-100 hover:shadow-md" [ngClass]="{'bg-zinc-300': item.clavePrincipal === subtituloActual}" (click)="setCurTime(item.tiempo_Inicio)">
+                        <a class="text-black">{{item.tiempo_Inicio}} - {{item.tiempo_Fin}}</a>
+                        <p class="text-secondary" [innerHTML]="transformarData(item.textoOriginal) | sanitizeHtml">
+                            <!-- {{item.textoOriginal}} -->
+                        </p>
+                    </div>
+                </ng-container>
+                <mat-paginator class="bg-transparent" [length]="totalResponse" [pageIndex]="page" [pageSize]="20" [showFirstLastButtons]="true" (page)="handlePageEnvent($event)"></mat-paginator>
+            </div>
+        </div>
+
+    </div>
+</div>

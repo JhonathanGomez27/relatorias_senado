@@ -1,0 +1,68 @@
+
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+
+    <!-- Main -->
+    <div class="flex-auto p-6 sm:p-10 shadow overflow-y-auto bg-card" cdkScrollable>
+
+        <!-- CONTENT GOES HERE -->
+        <div class="">
+            <!-- back button -->
+            <div class="w-full">
+                <button class="cursor-pointer p-2 flex items-center rounded-none bg-gray-100 text-lg" mat-flat-button [routerLink]="['/programas/filtro']">
+                    <mat-icon class="text-current icon-size-4 mr-5" [svgIcon]="'mat_outline:arrow_back_ios'"></mat-icon>&nbsp; Volver
+                </button>
+            </div>
+
+            <!-- Main content -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <!-- program information -->
+                <div class="p-2 w-full flex flex-col">
+                    <img src="assets/images/dashboard/thumbnail.png" alt="img programa">
+                    <p class="text-2xl font-bold mt-4 text-black">Nombre del programa</p>
+                    <p class="font-medium text-secondary text-xl">Desde - Hasta (Fecha de emisión)</p>
+                    <p class="font-semibold text-gray-700 text-base mt-4">Tags que coinciden</p>
+                    <!-- tags list -->
+                    <div class="w-full flex mt-2 gap-2 flex-wrap">
+                        <p class="px-2 py-1 text-sm bg-gray-200 text-gray-500 font-bold tracking-wide">Palabra</p>
+                        <p class="px-2 py-1 text-sm bg-gray-200 text-gray-500 font-bold tracking-wide">Palabra mas larga</p>
+                    </div>
+                </div>
+
+                <!-- episodes info -->
+                <div class="w-full p-2">
+                    <div class="flex flex-col border p-3 border-l-8 border-gray-200 mb-3" *ngFor="let item of [1,1,1,1,1,1,]">
+                        <div class="flex flex-row justify-between items-center">
+                            <p class="text-xl font-bold text-black">Episodio 00</p>
+                            <p class="text-lg font-normal text-secondary">000 Conicidencias</p>
+                        </div>
+                        <p class="text-lg text-secondary font-medium">DD/MM/AAAA</p>
+                        <div class="w-full flex flex-nowrap mt-2 overflow-hidden gap-2">
+                            <div class="flex items-center justify-center px-2 leading-7 text-gray-500 bg-gray-100 dark:text-gray-300 dark:bg-gray-700">
+                                <span class="text-md font-medium whitespace-nowrap">Palabra</span>
+                            </div>
+                            <div class="flex items-center justify-center px-2 leading-7 text-gray-500 bg-gray-100 dark:text-gray-300 dark:bg-gray-700">
+                                <span class="text-md font-medium whitespace-nowrap">Palabra mas larga</span>
+                            </div>
+                            <div class="flex items-center justify-center px-2 leading-7 text-gray-500 bg-gray-100 dark:text-gray-300 dark:bg-gray-700">
+                                <span class="text-md font-medium whitespace-nowrap">Palabra</span>
+                            </div>
+                            <div class="flex items-center justify-center px-2 leading-7 text-gray-500 bg-gray-100 dark:text-gray-300 dark:bg-gray-700">
+                                <span class="text-md font-medium whitespace-nowrap">Palabra mas larga</span>
+                            </div>
+                            <div class="flex items-center justify-center px-2 leading-7 text-gray-500 bg-gray-100 dark:text-gray-300 dark:bg-gray-700">
+                                <span class="text-md font-medium whitespace-nowrap">Palabra</span>
+                            </div>
+                            <div class="flex items-center justify-center px-2 leading-7 text-gray-500 bg-gray-100 dark:text-gray-300 dark:bg-gray-700">
+                                <span class="text-md font-medium whitespace-nowrap">Palabra</span>
+                            </div>
+                            <div class="flex items-center justify-center px-2 leading-7 text-gray-500 bg-gray-100 dark:text-gray-300 dark:bg-gray-700">
+                                <span class="text-md font-medium whitespace-nowrap">Palabra</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

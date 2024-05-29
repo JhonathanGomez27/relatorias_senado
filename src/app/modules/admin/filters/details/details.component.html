@@ -1,0 +1,67 @@
+<div class="w-full md:absolute inset-0 flex flex-col min-w-0 md:overflow-hidden md:flex-row">
+    <!-- Main -->
+    <div class="flex-auto p-2 md:overflow-y-auto bg-card md:w-1/2" cdkScrollable>
+
+        <!-- CONTENT GOES HERE -->
+        <div class="min-h-100 ">
+            <!-- Breadcrumbs -->
+            <div class="flex flex-wrap items-center font-medium p-2">
+                <a class="whitespace-nowrap text-primary-500" [routerLink]="['/programas/filtro']" queryParamsHandling="merge">Filtros</a>
+                <div class="flex items-center ml-1 whitespace-nowrap">
+                    <mat-icon
+                        class="icon-size-5 text-secondary"
+                        [svgIcon]="'heroicons_mini:chevron-right'"></mat-icon>
+                    <a class="ml-1 text-primary-500">{{programa.titulo}}</a>
+                </div>
+            </div>
+            <!-- back button -->
+            <div class="w-full p-2">
+                <button class="cursor-pointer p-2 flex items-center rounded-none bg-gray-100 text-lg" mat-flat-button [routerLink]="['/programas/filtro']" queryParamsHandling="merge">
+                    <mat-icon class="text-current icon-size-4 mr-5" [svgIcon]="'mat_outline:arrow_back_ios'"></mat-icon>&nbsp; Volver
+                </button>
+            </div>
+            <!-- program information -->
+            <div class="p-2 w-full flex flex-col">
+                <div class="w-full h-72">
+                    <img class="h-full object-cover" [src]="getImgRoute(programa.imagen)" alt="img programa">
+                </div>
+                <p class="text-2xl font-bold mt-4 text-black">{{programa.titulo}}</p>
+                <p class="font-medium text-secondary text-xl">{{programa.idioma}} - {{programa.productora}}</p>
+                <p class="font-semibold text-gray-700 text-base mt-4">Tags que coinciden</p>
+                <!-- tags list -->
+                <div class="w-full flex mt-2 gap-2 flex-wrap">
+                    <ng-container *ngFor="let item of tags">
+                        <p class="px-2 py-1 text-sm bg-gray-200 text-gray-500 font-bold tracking-wide">{{item | titlecase}}</p>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div class="flex-auto p-2 md:overflow-y-auto bg-card md:w-1/2" cdkScrollable>
+
+        <!-- CONTENT GOES HERE -->
+        <div class="min-h-100 py-10">
+            <ng-container *ngFor="let item of fichas">
+                <a class="flex flex-col border p-3 border-l-8 border-zinc-200 mb-3 cursor-pointer hover:bg-zinc-100 hover:shadow-md" [routerLink]="['/programas/filtro', programa.clavePrincipal, item.ficha.clavePrincipal]" queryParamsHandling="merge">
+                    <div class="flex flex-row justify-between items-center">
+                        <p class="text-xl font-bold text-black">{{item.ficha.nombreArchivo}}</p>
+                        <p class="text-lg font-normal text-secondary" *ngIf="item.coincidencias">{{item.coincidencias}} Conicidencias</p>
+                    </div>
+                    <div class="flex justify-between">
+                        <p class="text-lg text-secondary font-medium">{{item.ficha.copyright}}</p>
+                        <p class="text-lg text-secondary font-medium">{{item.ficha.duracion}}</p>
+                    </div>
+                    <!-- <div class="w-full flex flex-nowrap mt-2 overflow-hidden gap-2">
+                        <div class="flex items-center justify-center px-2 leading-7 text-gray-500 bg-gray-100 dark:text-gray-300 dark:bg-gray-700">
+                            <span class="text-md font-medium whitespace-nowrap">Palabra</span>
+                        </div>
+                    </div> -->
+                </a>
+            </ng-container>
+
+            <mat-paginator class="bg-transparent" [length]="totalResultados" [pageIndex]="page" [pageSize]="20" [showFirstLastButtons]="true" (page)="handlePageEnvent($event)" [disabled]="loading"></mat-paginator>
+        </div>
+    </div>
+</div>

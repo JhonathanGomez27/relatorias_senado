@@ -1,0 +1,56 @@
+
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-y-auto" cdkScrollable>
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 pb-22 sm:pt-12 sm:pb-28 sm:px-10 relative">
+        <div class="absolute w-full h-full left-0 top-0">
+            <img class="object-cover w-full h-full opacity-40" [src]="image" alt="">
+        </div>
+        <div class="flex-1 min-w-0 relative">
+            <div>
+                <!-- Breadcrumbs -->
+                <div class="flex flex-wrap items-center font-medium mb-2">
+                    <a class="whitespace-nowrap text-black text-stroke" [routerLink]="['/programas']">Programas</a>
+                    <div class="flex items-center ml-1 whitespace-nowrap">
+                        <mat-icon
+                            class="icon-size-5 text-secondary"
+                            [svgIcon]="'heroicons_mini:chevron-right'"></mat-icon>
+                        <a class="ml-1 text-black text-stroke" [routerLink]="['/programas/ver', programData.clavePrincipal]">{{programData.titulo}}</a>
+                    </div>
+                    <div class="flex items-center ml-1 whitespace-nowrap" *ngIf="yearSelected !== ''">
+                        <mat-icon
+                            class="icon-size-5 text-secondary"
+                            [svgIcon]="'heroicons_mini:chevron-right'"></mat-icon>
+                        <a class="ml-1 text-black text-stroke">{{yearSelected}}</a>
+                    </div>
+                </div>
+                <div class="flex justify-between">
+                    <a class="cursor-pointer p-2 flex items-center rounded-none bg-gray-100 text-lg" mat-flat-button (click)="locationBack()">
+                        <mat-icon class="text-current icon-size-4 mr-5" [svgIcon]="'mat_outline:arrow_back_ios'"></mat-icon>&nbsp; Volver
+                    </a>
+                    <button mat-flat-button class="p-2 flex items-center rounded-none bg-gray-100 text-lg" matTooltip="Subir imagen programa" (click)="fileInput.click()" [disabled]="disableButton">
+                        <mat-icon class="icon-size-5 text-secondary" [svgIcon]="'heroicons_solid:arrow-up-tray'"></mat-icon>
+                    </button>
+                    <input class="hidden"  (change)="onFileSelected($event)" type="file" accept="image/jpeg, image/png, image/jpg" #fileInput>
+                </div>
+            </div>
+            <!-- Title -->
+            <div class="mt-2">
+                <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate text-stroke">
+                    {{programData.titulo}} {{yearSelected !== '' ? '- '+ yearSelected : ''}}
+                </h2>
+                <h3 class="text-xl md:text-2xl font-semibold text-secondary tracking-tight leading-7 sm:leading-10 truncate text-stroke">{{programData.idioma}} - {{programData.productora}}</h3>
+            </div>
+            <div *ngIf="_year | async"></div>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div class="flex-auto p-6 sm:p-10 shadow bg-card">
+
+        <!-- CONTENT GOES HERE -->
+        <div class="min-h-100">
+            <router-outlet></router-outlet>
+        </div>
+
+    </div>
+</div>
